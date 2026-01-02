@@ -2,42 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>rare decay</title>
-  <style>
-    body {
-      margin: 2rem;
-      font-family: system-ui, sans-serif;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-    }
-
-    .gallery img {
-      width: 100%;
-      cursor: pointer;
-    }
-
-    #viewer {
-      margin-top: 2rem;
-    }
-
-    #viewer img {
-      max-width: 90vw;
-      max-height: 80vh;
-      display: block;
-    }
-  </style>
+  <title>Gallery – raredecay</title>
 </head>
 <body>
 
 <h1>Gallery</h1>
 
-<div class="gallery">
-  <img src="IMG_20161111_145323227.jpg">
-  <img src="IMG_20161111_145415581.jpg">
-  <img src="IMG_20161111_145450635.jpg">
-  <img src="IMG_20161111_145639952.jpg">
-</div
+<img
+  src="IMG_20161111_145323227.jpg"
+  style="width:200px;cursor:pointer"
+  id="testimg"
+>
+
+<script>
+  document.getElementById('testimg').onclick = function () {
+    alert('clicked');
+  };
+</script>
+
+</body>
+</html>
