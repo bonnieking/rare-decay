@@ -24,10 +24,17 @@ h1 {
   flex-direction: column;
 }
 
+
 #lightbox {
-  display: flex;
-  flex-direction: column;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
 }
+
+#lightbox[hidden] {
+  display: none !important;
+}
+
 
 #lightbox img {
   max-width: 90vw;
