@@ -9,16 +9,18 @@
   cursor: pointer;
 }
 
+#image-frame {
+  width: 90vw;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #lightbox img {
   max-width: 90vw;
   max-height: 70vh;
   object-fit: contain;
-}
-
-
-#lightbox img {
-  max-width: 90vw;
-  max-height: 80vh;
 }
 
 #exif {
