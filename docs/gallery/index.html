@@ -58,21 +58,45 @@
 </div>
 
 <script>
-  const images = document.querySelectorAll('.gallery img');
+  const images = Array.from(document.querySelectorAll('.gallery img'));
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
 
-  images.forEach(img => {
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightbox.hidden = false;
-    });
+  let index = 0;
+
+  function openAt(i) {
+    index = i;
+    lightboxImg.src = images[index].src;
+    lightbox.hidden = false;
+  }
+
+  images.forEach((img, i) => {
+    img.addEventListener('click', () => openAt(i));
   });
 
   lightbox.addEventListener('click', () => {
     lightbox.hidden = true;
   });
+
+  document.addEventListener('keydown', e => {
+    if (lightbox.hidden) return;
+
+    if (e.key === 'Escape') {
+      lightbox.hidden = true;
+    }
+
+    if (e.key === 'ArrowRight') {
+      index = (index + 1) % images.length;
+      lightboxImg.src = images[index].src;
+    }
+
+    if (e.key === 'ArrowLeft') {
+      index = (index - 1 + images.length) % images.length;
+      lightboxImg.src = images[index].src;
+    }
+  });
 </script>
+
 
 </body>
 </html>
