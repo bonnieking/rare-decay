@@ -19,6 +19,27 @@
       width: 100%;
       cursor: pointer;
     }
+
+    /* LIGHTBOX */
+
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    #lightbox[hidden] {
+      display: none;
+    }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 80vh;
+    }
   </style>
 </head>
 <body>
@@ -32,13 +53,24 @@
   <img src="IMG_20161111_145639952.jpg">
 </div>
 
+<div id="lightbox" hidden>
+  <img id="lightbox-img">
+</div>
+
 <script>
   const images = document.querySelectorAll('.gallery img');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
 
   images.forEach(img => {
     img.addEventListener('click', () => {
-      alert('clicked: ' + img.src.split('/').pop());
+      lightboxImg.src = img.src;
+      lightbox.hidden = false;
     });
+  });
+
+  lightbox.addEventListener('click', () => {
+    lightbox.hidden = true;
   });
 </script>
 
