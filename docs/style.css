@@ -51,10 +51,5 @@ h1 {
   flex-direction: column;
 }
 
-#image-frame { order: 1; }
-#exif        { order: 2; }
-.gallery     { order: 3; margin-top: 1em; }
-
-
-#prev { left: 2rem; }
-#next { right: 2rem; }
+#prev { left: 5rem; }
+#next { right: 5rem; }
