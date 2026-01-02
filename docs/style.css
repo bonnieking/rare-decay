@@ -9,15 +9,12 @@
   cursor: pointer;
 }
 
-#lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,255,255,0.95);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+#lightbox img {
+  max-width: 90vw;
+  max-height: 70vh;
+  object-fit: contain;
 }
+
 
 #lightbox img {
   max-width: 90vw;
