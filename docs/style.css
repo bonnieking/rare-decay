@@ -19,9 +19,8 @@ h1 {
 #image-frame {
   width: 90vw;
   height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; 
+  flex-direction: column;
 }
 
 #lightbox img {
@@ -46,6 +45,16 @@ h1 {
   border: none;
   cursor: pointer;
 }
+
+#lightbox {
+  display: flex;
+  flex-direction: column;
+}
+
+#image-frame { order: 1; }
+#exif        { order: 2; }
+.gallery     { order: 3; margin-top: 1em; }
+
 
 #prev { left: 2rem; }
 #next { right: 2rem; }
