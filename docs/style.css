@@ -14,12 +14,18 @@ h1 {
 .gallery img {
   width: 100%;
   cursor: pointer;
+  pointer-events: auto; z-index: 1;
 }
 
 #image-frame {
   width: 90vw;
   height: 70vh;
   display: flex; 
+  flex-direction: column;
+}
+
+#lightbox {
+  display: flex;
   flex-direction: column;
 }
 
@@ -46,10 +52,7 @@ h1 {
   cursor: pointer;
 }
 
-#lightbox {
-  display: flex;
-  flex-direction: column;
-}
+
 
 #prev { left: 5rem; }
 #next { right: 5rem; }
