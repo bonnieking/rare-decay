@@ -8,15 +8,12 @@ let index = 0;
 function show(i) {
   index = i;
   const src = images[index].src;
-  
-  
-  lightboxImg.style.opacity = 0;
+  lightbox.hidden = false;
 
   // when new image finishes loading, fade it in
   lightboxImg.onload = () => {
-  lightboxImg.style.opacity = 1;
+
   lightboxImg.src = src;
-  lightbox.hidden = false;
   loadExif(src);
 }
 
