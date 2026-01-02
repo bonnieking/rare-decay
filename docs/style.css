@@ -1,0 +1,44 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.gallery img {
+  width: 100%;
+  cursor: pointer;
+}
+
+#lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#lightbox img {
+  max-width: 90vw;
+  max-height: 80vh;
+}
+
+#exif {
+  margin-top: 1em;
+  font-size: 0.9em;
+  color: #555;
+  max-width: 80ch;
+}
+
+#prev, #next {
+  position: absolute;
+  top: 50%;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#prev { left: 2rem; }
+#next { right: 2rem; }
