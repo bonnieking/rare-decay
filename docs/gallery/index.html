@@ -101,52 +101,49 @@
   
 
 <script>
+  // ---- elements ----
   const images = Array.from(document.querySelectorAll('.gallery img'));
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
-  
+
   let index = 0;
 
-  function openAt(i) {
+  // ---- THE function that was missing ----
+  function show(i) {
     index = i;
+
+    // fade out
+    lightboxImg.style.opacity = 0;
+
+    // fade in when loaded
+    lightboxImg.onload = () => {
+      lightboxImg.style.opacity = 1;
+    };
+
     lightboxImg.src = images[index].src;
     lightbox.hidden = false;
+    lightbox.focus();
   }
 
+  // ---- thumbnail click opens lightbox ----
   images.forEach((img, i) => {
-    img.addEventListener('click', () => openAt(i));
+    img.addEventListener('click', e => {
+      e.stopPropagation();
+      show(i);
+    });
   });
 
-
+  // ---- background click closes ----
   lightbox.addEventListener('click', e => {
-  // only close if the background itself was clicked
-  if (e.target === lightbox) {
-    lightbox.hidden = true;
-    lightboxImg.style.opacity = 0;
-  }
-  });
-
-
-  document.addEventListener('keydown', e => {
-    if (lightbox.hidden) return;
-
-    if (e.key === 'Escape') {
+    if (e.target === lightbox) {
       lightbox.hidden = true;
-    }
-
-    if (e.key === 'ArrowRight') {
-      index = (index + 1) % images.length;
-      lightboxImg.src = images[index].src;
-    }
-
-    if (e.key === 'ArrowLeft') {
-      index = (index - 1 + images.length) % images.length;
-      lightboxImg.src = images[index].src;
+      lightboxImg.style.opacity = 0;
     }
   });
-  
+
+  // ---- nav buttons ----
   prevBtn.onclick = e => {
     e.preventDefault();
     e.stopPropagation();
@@ -158,8 +155,22 @@
     e.stopPropagation();
     show((index + 1) % images.length);
   };
-  
+
+  // ---- keyboard nav (Firefox-safe) ----
+  lightbox.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      lightbox.hidden = true;
+      lightboxImg.style.opacity = 0;
+    }
+    if (e.key === 'ArrowRight') {
+      show((index + 1) % images.length);
+    }
+    if (e.key === 'ArrowLeft') {
+      show((index - 1 + images.length) % images.length);
+    }
+  });
 </script>
+
 
 
 </body>
