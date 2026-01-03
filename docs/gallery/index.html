@@ -59,8 +59,13 @@
 </div>
 
 <div id="lightbox" hidden tabindex="0">
+  <button class="nav prev" aria-label="Previous image">‹</button>
+
   <img id="lightbox-img">
+
+  <button class="nav next" aria-label="Next image">›</button>
 </div>
+  
 
 <script>
   const images = Array.from(document.querySelectorAll('.gallery img'));
