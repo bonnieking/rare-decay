@@ -305,6 +305,10 @@ async function loadExif(src) {
       tags['Image Width'] && tags['Image Height']
         ? `${tags['Image Width'].description} × ${tags['Image Height'].description}`
         : null;
+    const namedLocation =
+      tags.Coverage?.description ||
+      tags['XMP-dc:Coverage']?.description ||
+    null;
 
     exifBox.innerHTML = `
       <div><strong>Captured:</strong> ${captured}</div>
