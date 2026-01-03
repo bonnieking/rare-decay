@@ -301,7 +301,6 @@ async function loadExif(src) {
     const res = await fetch(new URL(src, window.location).href);
     const buf = await res.arrayBuffer();
     const t = ExifReader.load(buf);
-    const t = ExifReader.load(buf);
     console.log('EXIF KEYS:', Object.keys(tags));
 
     const captured =
