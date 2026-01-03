@@ -289,8 +289,8 @@ lightbox.addEventListener('touchend', e => {
 });
 
 async function loadExif(src) {
-  alert('loadExif called');
   const exifBox = document.getElementById('exif');
+  exifBox.style.opacity = 0;
 
   try {
     const res = await fetch(new URL(src, window.location).href);
@@ -298,9 +298,7 @@ async function loadExif(src) {
     const tags = ExifReader.load(buf);
 
     const captured =
-      tags.DateTimeOriginal?.description ||
-      filenameTimestamp(src) ||
-      'Unknown';
+      tags.DateTimeOriginal?.description || 'Unknown';
 
     const resolution =
       tags['Image Width'] && tags['Image Height']
@@ -312,11 +310,14 @@ async function loadExif(src) {
       ${resolution ? `<div><strong>Resolution:</strong> ${resolution}</div>` : ''}
       <div><strong>Location:</strong> Not recorded</div>
     `;
+
+    exifBox.style.opacity = 1;
   } catch (e) {
     console.error('EXIF failed:', e);
     exifBox.textContent = '';
   }
 }
+
   // ---- background click closes ----
   lightbox.addEventListener('click', e => {
     if (e.target === lightbox) {
