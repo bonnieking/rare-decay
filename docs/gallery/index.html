@@ -310,11 +310,11 @@ async function loadExif(src) {
       tags['XMP-dc:Coverage']?.description ||
     null;
 
-    exifBox.innerHTML = `
-      <div><strong>Captured:</strong> ${captured}</div>
-      ${resolution ? `<div><strong>Resolution:</strong> ${resolution}</div>` : ''}
-      <div><strong>Location:</strong> Not recorded</div>
-    `;
+exifBox.innerHTML = `
+  <div><strong>Captured:</strong> ${captured}</div>
+  ${resolution ? `<div><strong>Resolution:</strong> ${resolution}</div>` : ''}
+  <div><strong>Location:</strong> ${namedLocation || 'Not recorded'}</div>
+`;
 
     exifBox.style.opacity = 1;
   } catch (e) {
