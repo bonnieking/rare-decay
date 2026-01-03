@@ -114,9 +114,15 @@
     img.addEventListener('click', () => openAt(i));
   });
 
-  lightbox.addEventListener('click', () => {
+
+  lightbox.addEventListener('click', e => {
+  // only close if the background itself was clicked
+  if (e.target === lightbox) {
     lightbox.hidden = true;
+    lightboxImg.style.opacity = 0;
+  }
   });
+
 
   document.addEventListener('keydown', e => {
     if (lightbox.hidden) return;
