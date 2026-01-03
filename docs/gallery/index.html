@@ -91,6 +91,8 @@
   color: #555;
   line-height: 1.4;
   min-height: 4.5em;   
+  opacity: 0;
+  transition: opacity 0.15s linear;
 }
 
 .context {
@@ -229,6 +231,7 @@ These photos were taken in 2016, 5 years after RUN II of the <a href="https://en
   
 async function loadExif(src) {
   const exifBox = document.getElementById('exif');
+  exifBox.style.opacity = 0;
 
   try {
     if (typeof ExifReader === 'undefined') {
@@ -251,6 +254,7 @@ async function loadExif(src) {
         : null;
 
     const hasGPS = t.GPSLatitude && t.GPSLongitude;
+    exifBox.style.opacity = 1;
 
     exifBox.innerHTML = `
       <div><strong>Captured:</strong> ${captured}</div>
