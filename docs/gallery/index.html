@@ -198,25 +198,47 @@ async function loadExif(src) {
   exifBox.textContent = 'Metadata loading…';
 
   try {
-    const response = await fetch(src);
+    if (typeof ExifReader === 'undefined') {
+      exifBox.innerHTML = '<em>Metadata library not loaded.</em>';
+      return;
+    }
+
+    const response = await fetch(new URL(src, window.location).href);
     const buffer = await response.arrayBuffer();
     const tags = ExifReader.load(buffer);
 
-    const fields = [
-      'DateTimeOriginal',
-      'Make',
-      'Model',
-      'LensModel'
-    ];
+    const keys = Object.keys(tags).sort();
 
-    exifBox.innerHTML = fields
-      .filter(f => tags[f])
-      .map(f => `<div><strong>${f}:</strong> ${tags[f].description}</div>`)
-      .join('');
-  } catch {
-    exifBox.textContent = 'No metadata available';
+    if (keys.length === 0) {
+      const ts = filenameTimestamp(src);
+      exifBox.innerHTML = `
+        <div><strong>Filename timestamp:</strong> ${ts ?? 'Unknown'}</div>
+        <div><em>No embedded EXIF metadata present.</em></div>
+      `;
+      return;
+    }
+
+    exifBox.innerHTML = `
+      <div class="exif-table">
+        ${keys.map(k => {
+          const v = tags[k];
+          const value =
+            v.description ??
+            (Array.isArray(v.value) ? v.value.join(', ') : v.value);
+
+          return `<div class="exif-row">
+            <span class="exif-key">${k}</span>
+            <span class="exif-value">${value}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+  } catch (e) {
+    console.error('EXIF error:', e);
+    exifBox.innerHTML = '<em>Unable to read metadata.</em>';
   }
 }
+
 
   // ---- background click closes ----
   lightbox.addEventListener('click', e => {
