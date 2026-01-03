@@ -89,21 +89,23 @@
   <img src="IMG_20161111_145450635.jpg">
   <img src="IMG_20161111_145639952.jpg">
 </div>
-
+  
 <div id="lightbox" hidden tabindex="0">
-  <button class="nav prev" aria-label="Previous image">‹</button>
+  <button id="prevBtn" type="button" class="nav prev" aria-label="Previous image">‹</button>
 
   <img id="lightbox-img">
 
-  <button class="nav next" aria-label="Next image">›</button>
+  <button id="nextBtn" type="button" class="nav next" aria-label="Next image">›</button>
 </div>
+
   
 
 <script>
   const images = Array.from(document.querySelectorAll('.gallery img'));
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
   let index = 0;
 
   function openAt(i) {
