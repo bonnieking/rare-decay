@@ -301,6 +301,8 @@ async function loadExif(src) {
     const res = await fetch(new URL(src, window.location).href);
     const buf = await res.arrayBuffer();
     const t = ExifReader.load(buf);
+    const t = ExifReader.load(buf);
+    console.log('EXIF KEYS:', Object.keys(tags));
 
     const captured =
       t.DateTimeOriginal?.description ||
@@ -311,21 +313,23 @@ async function loadExif(src) {
       t['Image Width'] && t['Image Height']
         ? `${t['Image Width'].description} × ${t['Image Height'].description}`
         : null;
+    
     const namedLocation =
       t['XMP-dc:Coverage']?.description ||      
       t['City']?.description ||
       null;
+    
     const hasGPS = t.GPSLatitude && t.GPSLongitude;
     exifBox.style.opacity = 1;
     let locationLine;
 
-if (hasGPS) {
-  locationLine = 'Recorded (GPS)';
-} else if (namedLocation) {
-  locationLine = namedLocation;
-} else {
-  locationLine = 'Not recorded';
-}
+    if (hasGPS) {
+      locationLine = 'Recorded (GPS)';
+    } else if (namedLocation) {
+      locationLine = namedLocation; 
+    } else {
+      locationLine = 'Not recorded';
+    }
 
     exifBox.innerHTML = `
       <div><strong>Captured:</strong> ${captured}</div>
