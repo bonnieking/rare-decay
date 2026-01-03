@@ -311,14 +311,27 @@ async function loadExif(src) {
       t['Image Width'] && t['Image Height']
         ? `${t['Image Width'].description} × ${t['Image Height'].description}`
         : null;
-
+    const namedLocation =
+      t['Coverage']?.description ||
+      t['City']?.description ||
+      null;
     const hasGPS = t.GPSLatitude && t.GPSLongitude;
     exifBox.style.opacity = 1;
+    let locationLine;
+
+if (hasGPS) {
+  locationLine = 'Recorded (GPS)';
+} else if (namedLocation) {
+  locationLine = namedLocation;
+} else {
+  locationLine = 'Not recorded';
+}
 
     exifBox.innerHTML = `
       <div><strong>Captured:</strong> ${captured}</div>
       ${resolution ? `<div><strong>Resolution:</strong> ${resolution}</div>` : ''}
-      <div><strong>Location metadata:</strong> ${hasGPS ? 'Recorded' : 'Not recorded'}</div>
+
+      <div><strong>Location:</strong> ${locationLine}</div>
     `;
   } catch {
     exifBox.textContent = '';
