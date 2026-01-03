@@ -14,6 +14,7 @@ function show(i) {
   lightboxImg.onload = () => {
 
   lightboxImg.src = src;
+  lightbox.focus(); // 🔑 THIS IS THE FIX
   loadExif(src);
 }
 
