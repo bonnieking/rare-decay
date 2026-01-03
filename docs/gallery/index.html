@@ -195,47 +195,45 @@ edit the material beyond ordering and presentation.
   
 async function loadExif(src) {
   const exifBox = document.getElementById('exif');
-  exifBox.textContent = 'Metadata loading…';
 
   try {
     if (typeof ExifReader === 'undefined') {
-      exifBox.innerHTML = '<em>Metadata library not loaded.</em>';
+      exifBox.textContent = 'Metadata unavailable.';
       return;
     }
 
-    const response = await fetch(new URL(src, window.location).href);
-    const buffer = await response.arrayBuffer();
-    const tags = ExifReader.load(buffer);
+    const res = await fetch(new URL(src, window.location).href);
+    const buf = await res.arrayBuffer();
+    const t = ExifReader.load(buf);
 
-    const keys = Object.keys(tags).sort();
+    const captured =
+      t.DateTimeOriginal?.description ||
+      filenameTimestamp(src) ||
+      'Unknown';
 
-    if (keys.length === 0) {
-      const ts = filenameTimestamp(src);
-      exifBox.innerHTML = `
-        <div><strong>Filename timestamp:</strong> ${ts ?? 'Unknown'}</div>
-        <div><em>No embedded EXIF metadata present.</em></div>
-      `;
-      return;
-    }
+    const exposure = [
+      t.ExposureTime?.description,
+      t.FNumber?.description,
+      t.ISOSpeedRatings?.description && `ISO ${t.ISOSpeedRatings.description}`
+    ].filter(Boolean).join(' · ');
+
+    const focal = t.FocalLength?.description;
+    const reso =
+      t['Image Width'] && t['Image Height']
+        ? `${t['Image Width'].description} × ${t['Image Height'].description}`
+        : null;
+
+    const hasGPS = t.GPSLatitude && t.GPSLongitude;
 
     exifBox.innerHTML = `
-      <div class="exif-table">
-        ${keys.map(k => {
-          const v = tags[k];
-          const value =
-            v.description ??
-            (Array.isArray(v.value) ? v.value.join(', ') : v.value);
-
-          return `<div class="exif-row">
-            <span class="exif-key">${k}</span>
-            <span class="exif-value">${value}</span>
-          </div>`;
-        }).join('')}
-      </div>
+      <div><strong>Captured:</strong> ${captured}</div>
+      ${exposure ? `<div><strong>Exposure:</strong> ${exposure}</div>` : ''}
+      ${focal ? `<div><strong>Focal length:</strong> ${focal}</div>` : ''}
+      ${reso ? `<div><strong>Resolution:</strong> ${reso}</div>` : ''}
+      <div><strong>Location:</strong> ${hasGPS ? 'Recorded' : 'Not recorded'}</div>
     `;
-  } catch (e) {
-    console.error('EXIF error:', e);
-    exifBox.innerHTML = '<em>Unable to read metadata.</em>';
+  } catch {
+    exifBox.textContent = 'Metadata unavailable.';
   }
 }
 
