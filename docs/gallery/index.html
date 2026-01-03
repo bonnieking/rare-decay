@@ -145,16 +145,17 @@ const nextBtn = document.getElementById('nextBtn');
       lightboxImg.src = images[index].src;
     }
   });
-  prevBtn.addEventListener('click', e => {
+prevBtn.onclick = e => {
+  e.preventDefault();
   e.stopPropagation();
   show((index - 1 + images.length) % images.length);
-});
+};
 
-nextBtn.addEventListener('click', e => {
+nextBtn.onclick = e => {
+  e.preventDefault();
   e.stopPropagation();
   show((index + 1) % images.length);
-});
-
+};
 </script>
 
 
