@@ -104,8 +104,9 @@
   const images = Array.from(document.querySelectorAll('.gallery img'));
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  
   let index = 0;
 
   function openAt(i) {
@@ -145,17 +146,19 @@ const nextBtn = document.getElementById('nextBtn');
       lightboxImg.src = images[index].src;
     }
   });
-prevBtn.onclick = e => {
-  e.preventDefault();
-  e.stopPropagation();
-  show((index - 1 + images.length) % images.length);
-};
+  
+  prevBtn.onclick = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    show((index - 1 + images.length) % images.length);
+  };
 
-nextBtn.onclick = e => {
-  e.preventDefault();
-  e.stopPropagation();
-  show((index + 1) % images.length);
-};
+  nextBtn.onclick = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    show((index + 1) % images.length);
+  };
+  
 </script>
 
 
