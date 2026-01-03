@@ -141,6 +141,16 @@
       lightboxImg.src = images[index].src;
     }
   });
+  prevBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  show((index - 1 + images.length) % images.length);
+});
+
+nextBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  show((index + 1) % images.length);
+});
+
 </script>
 
 
