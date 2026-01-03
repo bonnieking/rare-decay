@@ -198,7 +198,7 @@ async function loadExif(src) {
 
   try {
     if (typeof ExifReader === 'undefined') {
-      exifBox.textContent = 'Metadata unavailable.';
+      exifBox.textContent = '';
       return;
     }
 
@@ -211,14 +211,7 @@ async function loadExif(src) {
       filenameTimestamp(src) ||
       'Unknown';
 
-    const exposure = [
-      t.ExposureTime?.description,
-      t.FNumber?.description,
-      t.ISOSpeedRatings?.description && `ISO ${t.ISOSpeedRatings.description}`
-    ].filter(Boolean).join(' · ');
-
-    const focal = t.FocalLength?.description;
-    const reso =
+    const resolution =
       t['Image Width'] && t['Image Height']
         ? `${t['Image Width'].description} × ${t['Image Height'].description}`
         : null;
@@ -227,13 +220,11 @@ async function loadExif(src) {
 
     exifBox.innerHTML = `
       <div><strong>Captured:</strong> ${captured}</div>
-      ${exposure ? `<div><strong>Exposure:</strong> ${exposure}</div>` : ''}
-      ${focal ? `<div><strong>Focal length:</strong> ${focal}</div>` : ''}
-      ${reso ? `<div><strong>Resolution:</strong> ${reso}</div>` : ''}
-      <div><strong>Location:</strong> ${hasGPS ? 'Recorded' : 'Not recorded'}</div>
+      ${resolution ? `<div><strong>Resolution:</strong> ${resolution}</div>` : ''}
+      <div><strong>Location metadata:</strong> ${hasGPS ? 'Recorded' : 'Not recorded'}</div>
     `;
   } catch {
-    exifBox.textContent = 'Metadata unavailable.';
+    exifBox.textContent = '';
   }
 }
 
