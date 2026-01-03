@@ -312,7 +312,7 @@ async function loadExif(src) {
         ? `${t['Image Width'].description} × ${t['Image Height'].description}`
         : null;
     const namedLocation =
-      t['Coverage']?.description ||
+      t['XMP-dc:Coverage']?.description ||      
       t['City']?.description ||
       null;
     const hasGPS = t.GPSLatitude && t.GPSLongitude;
