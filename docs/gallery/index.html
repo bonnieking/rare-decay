@@ -289,6 +289,52 @@ lightbox.addEventListener('touchend', e => {
   }
 });
 
+function tagToText(tag) {
+  if (tag == null) return null;
+
+  // Sometimes ExifReader gives plain strings
+  if (typeof tag === 'string') return tag.trim() || null;
+
+  // Common ExifReader shapes
+  if (typeof tag.description === 'string' && tag.description.trim()) return tag.description.trim();
+  if (typeof tag.value === 'string' && tag.value.trim()) return tag.value.trim();
+
+  // Sometimes value is an array (rare but happens)
+  if (Array.isArray(tag.value)) {
+    const s = tag.value.map(v => (typeof v === 'string' ? v : '')).join(' ').trim();
+    if (s) return s;
+  }
+
+  // Last resort: try to stringify something useful
+  try {
+    const s = JSON.stringify(tag);
+    return s && s !== '{}' ? s : null;
+  } catch {
+    return null;
+  }
+}
+
+function findCoverage(tags) {
+  // First try obvious keys
+  const keysToTry = ['XMP-dc:Coverage', 'Coverage', 'XMP:Coverage'];
+  for (const k of keysToTry) {
+    const s = tagToText(tags[k]);
+    if (s) return s;
+  }
+
+  // Then scan all keys for anything containing "coverage"
+  for (const k of Object.keys(tags)) {
+    if (k.toLowerCase().includes('coverage')) {
+      const s = tagToText(tags[k]);
+      if (s) return s;
+    }
+  }
+
+  return null;
+}
+
+Now in loadExif(), after:
+  
 async function loadExif(src) {
   const exifBox = document.getElementById('exif');
   exifBox.style.opacity = 0;
@@ -305,16 +351,14 @@ async function loadExif(src) {
       tags['Image Width'] && tags['Image Height']
         ? `${tags['Image Width'].description} × ${tags['Image Height'].description}`
         : null;
-    const namedLocation =
-      tags.Coverage?.value ||
-      tags['XMP-dc:Coverage']?.value ||
-    null;
+    const namedLocation = findCoverage(tags);
 
 exifBox.innerHTML = `
   <div><strong>Captured:</strong> ${captured}</div>
   ${resolution ? `<div><strong>Resolution:</strong> ${resolution}</div>` : ''}
   <div><strong>Location:</strong> ${namedLocation || 'Not recorded'}</div>
 `;
+
 
     exifBox.style.opacity = 1;
   } catch (e) {
