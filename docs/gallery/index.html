@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Gallery – raredecay</title>
+  <title>RARE DECAY</title>
   <style>
     body {
       margin: 2rem;
@@ -75,13 +75,25 @@
 .nav:focus {
   outline: none;
 }
+#frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  }
+#exif {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #555;
+  min-height: 4em;
+  text-align: center;
+}
+
   </style>
 </head>
 <body>
 
-<h1>Gallery</h1>
+<h1>RARE DECAY</h1>
 
 <div class="gallery">
   <img src="IMG_20161111_145323227.jpg">
@@ -91,14 +103,19 @@
 </div>
   
 <div id="lightbox" hidden tabindex="0">
-  <button id="prevBtn" type="button" class="nav prev" aria-label="Previous image">‹</button>
+  <button id="prevBtn" type="button" class="nav prev">‹</button>
 
-  <img id="lightbox-img">
+  <div id="frame">
+    <img id="lightbox-img">
+    <div id="exif"></div>
+  </div>
 
-  <button id="nextBtn" type="button" class="nav next" aria-label="Next image">›</button>
+  <button id="nextBtn" type="button" class="nav next">›</button>
 </div>
 
+
   
+<script src="exif-reader.min.js"></script>
 
 <script>
   // ---- elements ----
@@ -123,6 +140,7 @@
     };
 
     lightboxImg.src = images[index].src;
+    loadExif(images[index].src);
     lightbox.hidden = false;
     lightbox.focus();
   }
@@ -134,6 +152,31 @@
       show(i);
     });
   });
+  
+async function loadExif(src) {
+  const exifBox = document.getElementById('exif');
+  exifBox.textContent = 'Metadata loading…';
+
+  try {
+    const response = await fetch(src);
+    const buffer = await response.arrayBuffer();
+    const tags = ExifReader.load(buffer);
+
+    const fields = [
+      'DateTimeOriginal',
+      'Make',
+      'Model',
+      'LensModel'
+    ];
+
+    exifBox.innerHTML = fields
+      .filter(f => tags[f])
+      .map(f => `<div><strong>${f}:</strong> ${tags[f].description}</div>`)
+      .join('');
+  } catch {
+    exifBox.textContent = 'No metadata available';
+  }
+}
 
   // ---- background click closes ----
   lightbox.addEventListener('click', e => {
