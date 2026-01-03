@@ -248,7 +248,46 @@ These photos were taken in 2016,
       show(i);
     });
   });
-  
+
+function nextImage() {
+  show((index + 1) % images.length);
+}
+
+function prevImage() {
+  show((index - 1 + images.length) % images.length);
+}
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+const SWIPE_THRESHOLD = 50; // px
+
+lightbox.addEventListener('touchstart', e => {
+  if (e.touches.length !== 1) return;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+lightbox.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].clientX;
+  touchEndY = e.changedTouches[0].clientY;
+
+  const dx = touchEndX - touchStartX;
+  const dy = touchEndY - touchStartY;
+
+  // Ignore vertical swipes (scroll intent)
+  if (Math.abs(dx) < Math.abs(dy)) return;
+
+  if (Math.abs(dx) > SWIPE_THRESHOLD) {
+    if (dx < 0) {
+      nextImage(); // swipe left → next
+    } else {
+      prevImage(); // swipe right → previous
+    }
+  }
+});
+
 async function loadExif(src) {
   const exifBox = document.getElementById('exif');
   exifBox.style.opacity = 0;
